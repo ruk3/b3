@@ -28,6 +28,7 @@ public class AdamScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*
         Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
 
         float dx = Vector3.Dot(transform.right, worldDeltaPosition);
@@ -41,10 +42,10 @@ public class AdamScript : MonoBehaviour
         {
             velocity = smoothDeltaPosition / Time.deltaTime;
         }
+        */
+        
 
-
-
-        //KeyControl();
+        KeyControl();
         /*
         var destDir = target.transform.position - transform.position;
         var currDir = transform.forward;

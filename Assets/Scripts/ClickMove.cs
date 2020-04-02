@@ -8,7 +8,7 @@ public class ClickMove : MonoBehaviour
 {
     RaycastHit hitInfo = new RaycastHit();
     NavMeshAgent agent;
-
+    public Camera free;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,7 +20,7 @@ public class ClickMove : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Ray ray = free.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray.origin, ray.direction, out hitInfo))
             {
                 agent.destination = hitInfo.point;
