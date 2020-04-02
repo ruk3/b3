@@ -22,7 +22,7 @@ public class AdamScript : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
-        agent.updatePosition = false;
+//        agent.updatePosition = false;
     }
 
     // Update is called once per frame

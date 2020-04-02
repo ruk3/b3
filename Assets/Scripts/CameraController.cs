@@ -16,12 +16,15 @@ public class CameraController : MonoBehaviour
     public float rotationSpeed = 1;
     AudioListener thirdAudio;
     AudioListener camFreeAudio;
+    public Canvas crossHair;
     // Start is called before the first frame update
     void Start()
     {
+
         camFreeAudio = free.GetComponent<AudioListener>();
         thirdAudio = thirdPerson.GetComponent<AudioListener>();
         if(freeCam == true) {
+            crossHair.enabled = true;
             free.enabled = true;
             camFreeAudio.enabled = true;
             thirdAudio.enabled = false;
@@ -32,6 +35,7 @@ public class CameraController : MonoBehaviour
         }
         else
         {
+            crossHair.enabled = false;
             free.enabled = false;
             camFreeAudio.enabled = false;
             thirdAudio.enabled = true;
