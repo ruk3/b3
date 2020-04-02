@@ -27,6 +27,7 @@ public class AdamScript : MonoBehaviour
         agent.updatePosition = false;
 
         StartCoroutine(Run());
+
     }
 
     // Update is called once per frame
@@ -38,6 +39,7 @@ public class AdamScript : MonoBehaviour
         ClickToMove();
         //Below code chunk is trying to use Unity's implementation of NavMeshAgent to sync with animations. Animations currently don't sync.
 
+        /*
         Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
 
         float dx = Vector3.Dot(transform.right, worldDeltaPosition);
@@ -51,7 +53,9 @@ public class AdamScript : MonoBehaviour
         {
             velocity = smoothDeltaPosition / Time.deltaTime;
         }
-
+        */
+        
+        KeyControl();
         bool shouldMove = velocity.magnitude > 0.5f && agent.remainingDistance > agent.radius;
 
         anim.SetBool("move", shouldMove);
