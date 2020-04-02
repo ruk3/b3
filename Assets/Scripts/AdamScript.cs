@@ -8,6 +8,7 @@ public class AdamScript : MonoBehaviour
     Animator anim;
     NavMeshAgent agent;
     public GameObject target;
+    RaycastHit hitInfo = new RaycastHit();
 
     Vector2 smoothDeltaPosition = Vector2.zero;
     Vector2 velocity = Vector2.zero;
@@ -22,6 +23,7 @@ public class AdamScript : MonoBehaviour
     void Start()
     {
         anim = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
         agent.updatePosition = false;
 
         StartCoroutine(Run());
@@ -30,8 +32,12 @@ public class AdamScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //This line is for Keyboard controller. Uncomment this and recomment everything else if you want to use Keyboard controller
+        //KeyControl();
+
+        ClickToMove();
         //Below code chunk is trying to use Unity's implementation of NavMeshAgent to sync with animations. Animations currently don't sync.
-        /*
+
         Vector3 worldDeltaPosition = agent.nextPosition - transform.position;
 
         float dx = Vector3.Dot(transform.right, worldDeltaPosition);
@@ -55,8 +61,8 @@ public class AdamScript : MonoBehaviour
 		LookAt lookAt = GetComponent<LookAt> ();
 		if (lookAt)
 			lookAt.lookAtTargetPosition = agent.steeringTarget + transform.forward;
-        */
         
+
         //This line is for Keyboard controller. Uncomment this and recomment everything else if you want to use Keyboard controller
         //KeyControl();
 
@@ -66,19 +72,27 @@ public class AdamScript : MonoBehaviour
         var currDir = transform.forward;
         var angDev = Vector3.SignedAngle(destDir, currDir, Vector3.up);
 
+        
         if (angDev < -2.5F)
         {
             anim.SetTrigger(leftHash);
-            
+            anim.ResetTrigger(rightHash);
+
         } else if (angDev > 2.5F)
         {
             anim.SetTrigger(rightHash);
+            anim.ResetTrigger(leftHash);
             
         } else if (angDev < -2.5F && angDev > 2.5F)
         {
             anim.ResetTrigger(leftHash);
             anim.ResetTrigger(rightHash);
         }
+        
+
+        ClickMove clickmove = GetComponent<ClickMove>();
+        if (clickmove)
+            target = clickmove.hitInfo.point;
 
         var anDev = Vector3.SignedAngle(destDir, currDir, Vector3.up) / 180;
 
@@ -96,6 +110,7 @@ public class AdamScript : MonoBehaviour
     // Used for Keyboard controlled movement of the agent
     private void KeyControl()
     {
+        anim.SetBool("move", true);
         if (Input.GetKey(KeyCode.LeftShift))
         {
             runSpeed = 2;
@@ -128,17 +143,30 @@ public class AdamScript : MonoBehaviour
         }
     }
 
+    private void ClickToMove()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray.origin, ray.direction, out hitInfo))
+            {
+                agent.destination = hitInfo.point;
+            }
+
+        }
+    }
+
     void OnAnimatorMove()
     {
         // Update postion to agent position
-        //		transform.position = agent.nextPosition;
+        transform.position = agent.nextPosition;
 
         // Update position based on animation movement using navigation surface height
-        Vector3 position = anim.rootPosition;
-        position.y = agent.nextPosition.y;
-        transform.position = position;
+        //Vector3 position = anim.rootPosition;
+        //position.y = agent.nextPosition.y;
+        //transform.position = position;
     }
-
+    
     IEnumerator Run()
     {
         while (true)

@@ -6,7 +6,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class ClickMove : MonoBehaviour
 {
-    RaycastHit hitInfo = new RaycastHit();
+    public RaycastHit hitInfo = new RaycastHit();
     NavMeshAgent agent;
 
     // Start is called before the first frame update
