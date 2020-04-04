@@ -24,6 +24,8 @@ public class ClickMove : MonoBehaviour
             if (Physics.Raycast(ray.origin, ray.direction, out hitInfo))
             {
                 agent.destination = hitInfo.point;
+                agent.isStopped = false;
+                agent.tag = "Untagged";
             }
         }
         
